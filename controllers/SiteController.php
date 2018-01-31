@@ -127,8 +127,6 @@ class SiteController extends Controller
 
     public function actionSay( $message = 'hello'){
         $lizhi = Lizhi::find()->orderBy('id')->all();
-        echo "<pre>";
-        print_r($lizhi);die;
-        return $this->render('say',['message'=>$message]);
+
     }
 }
