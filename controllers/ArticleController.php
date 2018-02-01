@@ -107,6 +107,9 @@ class ArticleController extends Controller {
 //            ])->from('c_lizhi')->all();
 
         //复杂的条件模式
+        $query = $query->where(['and','id=10',['or','id=10','id=20']])->from('c_lizhi')->all();
+        echo "<pre>";
+        print_r($query);
 
     }
 
