@@ -8,6 +8,7 @@
 namespace app\controllers;
 
 
+use app\models\Article;
 use yii\db\Query;
 use yii\web\Controller;
 
@@ -107,10 +108,40 @@ class ArticleController extends Controller {
 //            ])->from('c_lizhi')->all();
 
         //复杂的条件模式
-        $query = $query->where(['and','id=10',['or','id=10','id=20']])->from('c_lizhi')->all();
-        echo "<pre>";
-        print_r($query);
+//        $query = $query->where(['and',['>=','id',10],['or','id=10','id=20']])->from('c_lizhi')->all();
+//        $query = $query->where(['and',['>=','id',10],['or','id=10','id=20']])->from('{{%lizhi}}')->indexBy('id')->all();//指定索引id
 
+
+//        $query = $query->where(['and',['>=','id',10],['or','id=10','id=20']])->from('{{%lizhi}}')
+//            ->indexBy(function($row){
+//                return $row['id'].$row['click'];
+//            })->all();//回调写法
+
+
+        $data = $query->from('{{%lizhi}}')->orderBy('id');//批量处理数据集 每次获取指定数量的数据，默认是100
+        echo "<pre>";
+        foreach($data->batch(10) as $users){
+            print_r($users);
+            return false;
+        }
+
+
+
+    }
+    public function actionSql(){
+        $command = (new Query())->select(['id','title','name'])->from('{{%lizhi}}')->where(['<','id',10])->createCommand();
+        echo $command->sql;
+        echo "打印参数<br/>";
+        print_r($command->params);
+        echo "查询所有行<pre>";
+        print_r($command->queryAll());
+    }
+
+    //active_record  获取数据
+    public function actionActiveRecord(){
+//        $info = Article::find()->where(['id'=>5])->one();
+        $info = Article::find()->where(['id'=>5])->asArray()->one();
+        print_r($info);
     }
 
 }
