@@ -135,6 +135,12 @@ class ArticleController extends Controller {
         print_r($command->params);
         echo "查询所有行<pre>";
         print_r($command->queryAll());
+        $arr = [1,2,3,4];
+        $status = true;
+        foreach($arr as $id){
+            $status = $status && $id;
+        }
+        print_r($status);
     }
 
     //active_record  获取数据
@@ -143,5 +149,35 @@ class ArticleController extends Controller {
         $info = Article::find()->where(['id'=>5])->asArray()->one();
         print_r($info);
     }
+    public function actionHandle(){
+//        $info = new Article();
+//        $values = [
+//            'name'=>'111',
+//            'title'=>'title2222'
+//        ];
+//        $info->attributes = $values;//需要制定安全字段 在模型中
+//        if($info->save()){
+//            echo 'ok';
+//        }
+
+        //更新计数
+        $info = Article::findOne(1007);
+        $info->updateCounters(['click'=>1]);
+        echo 'yes';
+
+    }
+    public function actionHandleUpdate(){
+        $update = Article::updateAll(['click'=>10],['and',['=','name','111'],['=','title','title2222']]);
+        if($update){
+            echo 'update yes';
+        }
+    }
+    public function actionHandleDel(){
+//        $model = Article::findOne(10);
+//        $model->delete();
+
+        $model = Article::deleteAll(['click'=>100]);
+    }
+
 
 }
