@@ -64,6 +64,11 @@ $config = [
             ]
         ]
     ],
+    'modules' => [
+        'backend' => [
+            'class' => 'app\backend\admin',
+        ],
+    ],
     'controllerMap' => [
         'my-article'=>'app\controllers\ArticleController'
     ],
