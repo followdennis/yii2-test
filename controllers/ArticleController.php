@@ -10,6 +10,7 @@ namespace app\controllers;
 
 use app\models\Article;
 use yii\db\Query;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 class ArticleController extends Controller {
@@ -35,6 +36,95 @@ class ArticleController extends Controller {
 
         echo "<pre>";
         print_r($record);
+    }
+    public function actionTest(){
+        return 'test';
+    }
+
+    /**
+     * 请求测试
+     */
+    public function actionTestRequest(){
+        $request = \Yii::$app->request;
+        $get = $request->get('id',1);
+        echo "<pre>";
+        print_r($get);
+        if($request->isGet){
+            echo 'get';
+        }
+       echo "<hr>";
+        $headers = \Yii::$app->request->headers;
+        echo $request->userIp;
+    }
+    public function actionTestResponse(){
+        \Yii::$app->response->statusCode = 200;
+        \Yii::$app->response->content = 'hello world';
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;//json数据格式
+        return [
+            'code'=>200,
+            'msg'=>'success'
+        ];
+    }
+
+    /**
+     * @return \yii\web\Response
+     * 跳转测试
+     */
+    public function actionTestJump(){
+        return $this->redirect('/article/test',301);
+    }
+
+    /**
+     * session测试
+     */
+    public function actionTestSession(){
+        $session = \Yii::$app->session;
+        if($session->isActive){
+            echo '已开启session';
+        }else{
+            $session->open();
+            echo '手动打开session';
+        }
+//        $session->destory();销毁session中的已注册数据
+        // $session->set('lang','en-us');
+        // $session->get('language');
+        // $session->remove('lan');
+    }
+
+    /**
+     * cookie测试
+     */
+    public function actionTestCookie(){
+        $cookies = \Yii::$app->response->cookies;
+        //在要发送的响应中添加新的cookie
+        $cookies->add(new \Yii\web\Cookie([
+            'name'=>'languate',
+            'value'=>'zh-Cn'
+        ]));
+
+        // $cookies->remove('languate');//删除cookie
+        return 'cookie-ok';
+    }
+
+    /**
+     * 表单测试
+     */
+    public function actionForm(){
+        $model = new Article();
+
+        if($model->load(\Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['article/test','id'=>$model->id]);
+        }else{
+            return $this->render('form',[
+                'model'=>$model
+            ]);
+        }
+    }
+    /**
+     * url test
+     */
+    public function actionTestUrl(){
+        echo Url::to(['article/test','is'=>2]);//生成url
     }
     //增
     public function actionAdd(){

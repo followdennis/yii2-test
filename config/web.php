@@ -51,6 +51,21 @@ $config = [
             ],
         ],
         */
+        'urlManager' =>[
+            'enablePrettyUrl'=>true,
+            'showScriptName'=>false,
+            'enableStrictParsing'=>false,
+            'rules'=>[
+                [
+                    'pattern'=>'article/<page:\d+>',
+                    'route'=>'article/index',
+                ],
+                '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+            ]
+        ]
+    ],
+    'controllerMap' => [
+        'my-article'=>'app\controllers\ArticleController'
     ],
     'params' => $params,
 ];

@@ -20,7 +20,9 @@ class Article extends ActiveRecord {
     }
     public function rules(){
         return [
-            [['title','name'],'safe']  //必须使用安全模式，才能使用块定义
+            [['title','name'],'safe'],  //必须使用安全模式，才能使用块定义
+            ['name','required','message'=>'必填'],
+            ['click','required','message'=>'数字']
         ];
     }
 }
