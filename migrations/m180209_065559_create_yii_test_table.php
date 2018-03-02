@@ -12,7 +12,7 @@ class m180209_065559_create_yii_test_table extends Migration
      */
     public function up()
     {
-        $this->createTable('yii_test', [
+        $this->createTable('c_test', [
             'id' => $this->primaryKey(),
             'title'=>$this->string(),
             'content'=> $this->text()
