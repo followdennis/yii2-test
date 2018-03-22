@@ -9,6 +9,7 @@ namespace app\controllers;
 
 
 use app\models\Article;
+use app\models\Lizhi;
 use yii\db\Query;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -31,8 +32,12 @@ class ArticleController extends Controller {
 //           $record = \Yii::$app->db->createCommand('select * from c_lizhi where id=:id')
 //               ->bindValue(':id',10)
 //               ->queryOne(); //绑定值
-            $record = \Yii::$app->db->createCommand('select * from {{%lizhi}} where click=:click',[':click'=>10])->queryOne();//或者bindValues
-
+            $request = \Yii::$app->request;
+            $id = intval($request->get('page'));
+            $s = microtime(true);
+            $record = \Yii::$app->db->createCommand('select * from {{%lizhi}} where id=:id',[':id'=>$id])->queryOne();//或者bindValues
+            $e = microtime(true);
+            echo ($e-$s);
 
         echo "<pre>";
         print_r($record);
@@ -267,6 +272,17 @@ class ArticleController extends Controller {
 //        $model->delete();
 
         $model = Article::deleteAll(['click'=>100]);
+    }
+    public function actionDelChef(){
+        $id = \Yii::$app->request->get('id');
+        echo $id."<br/>";
+        $state = Lizhi::deleteAll(['id'=>'10']);
+
+        if($state){
+            echo 'succ';
+        }else{
+            echo 'fail';
+        }
     }
 
 
